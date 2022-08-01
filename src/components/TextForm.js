@@ -23,13 +23,14 @@ export default function TextForm(props) {
 
     //function to change given text to sentence case by changing first letter of first word of every sentence to uppercase and adding space before first word of every sentence.
     const handleSentenceBtnClick = () => {
-        let arraySentence=text.split("."); //creates an array of sentences
+        let arraySentence=text.split(/[.]+/); //creates an array of sentences
+        console.log(arraySentence)
         if(arraySentence[arraySentence.length-1] === "") arraySentence.pop();
         for(let chartrIndex in arraySentence) {
             let charValue=arraySentence[chartrIndex].split("");
             let beginningSpaceCount=0;
             for(let element of charValue) {
-                if(element !== " ") break;
+                if(element !== " " && element !== '\n') break;
                 beginningSpaceCount++;
             }
             if(beginningSpaceCount < charValue.length){ 
@@ -39,13 +40,13 @@ export default function TextForm(props) {
                 }
                 charValue[beginningSpaceCount]=charValue[beginningSpaceCount].toUpperCase();
             }
-            let sentenceCase=charValue.slice(beginningSpaceCount+1,charValue.length)
-            for(let elemIndex in sentenceCase) {
-                sentenceCase[elemIndex]=sentenceCase[elemIndex].toLowerCase();
-            }
-            sentenceCase=charValue.slice(0,beginningSpaceCount+1).join("")+sentenceCase.join("");
-            arraySentence[chartrIndex]=sentenceCase;
-            // arraySentence[chartrIndex]=charValue.join("");
+            // let sentenceCase=charValue.slice(beginningSpaceCount+1,charValue.length)
+            // for(let elemIndex in sentenceCase) {
+            //     sentenceCase[elemIndex]=sentenceCase[elemIndex].toLowerCase();
+            // }
+            // sentenceCase=charValue.slice(0,beginningSpaceCount+1).join("")+sentenceCase.join("");
+            // arraySentence[chartrIndex]=sentenceCase;
+            arraySentence[chartrIndex]=charValue.join("");
         }
         arraySentence=arraySentence.join(".");
         if(text.split("")[text.length-1] === ".") arraySentence+=".";
@@ -54,8 +55,8 @@ export default function TextForm(props) {
     }
 
     const handleRemoveExtraSpaces= () => {
-        const textNew=text.split(/[ ]+/);
-        setText(textNew.join(" "))
+        const textNew=text.split(/[ ]+/).join(" ");
+        setText(textNew)
         props.showAlert("Extra spaces have been removed!", "success")
     }
 
